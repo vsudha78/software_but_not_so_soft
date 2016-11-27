@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <pth.h>
 
+/* Callback function for thread */ 
 void *cb_Function();
 
 int  counter = 0;
@@ -22,11 +23,11 @@ main()
      attr1 = pth_attr_new();
      pth_attr_set(attr1, PTH_ATTR_NAME, "cb_function");
      pth_attr_set(attr1, PTH_ATTR_STACK_SIZE, 64*1024);
-     tid1 = pth_spawn(attr1, cb_function, NULL);
+     tid1 = pth_spawn(attr1, cb_function, NULL); /* Spawing thread 1 */
 
      attr2 = pth_attr_new();
      pth_attr_set(attr2, PTH_ATTR_NAME, "cb_function");
-     tid2 = pth_spawn(attr2, cb_function, NULL);
+     tid2 = pth_spawn(attr2, cb_function, NULL); /* Spawing thread 2 */
 
 		
    /* Wait till threads are complete before main continues. Unless we  */
@@ -41,6 +42,7 @@ main()
    exit(EXIT_SUCCESS);
 }
 
+/* Thread with mutex lock */
 void *cb_function()
 {
    pth_mutex_acquire(&mutex, FALSE, NULL);
